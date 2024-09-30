@@ -16,6 +16,11 @@ func TestConcat(t *testing.T) {
 		"key5": "value5",
 		"key6": "value6",
 	}
+	m3 := map[string]string{
+		"key7": "value7",
+		"key8": "value8",
+		"key9": "value9",
+	}
 	expected := map[string]string{
 		"key1": "value1",
 		"key2": "value2",
@@ -23,8 +28,11 @@ func TestConcat(t *testing.T) {
 		"key4": "value4",
 		"key5": "value5",
 		"key6": "value6",
+		"key7": "value7",
+		"key8": "value8",
+		"key9": "value9",
 	}
-	actual := Concat(m1, m2)
+	actual := Concat(m1, m2, m3)
 
 	if !Equals(actual, expected) {
 		t.Fatalf("\nExpected:\t%v\nActual:\t\t%v\n", expected, actual)

@@ -6,12 +6,16 @@ import (
 )
 
 // Concatenate the maps given
-func Concat[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
-	for key2, value2 := range m2 {
-		m1[key2] = value2
+func Concat[K comparable, V any](maps ...map[K]V) map[K]V {
+	concatenated := map[K]V{}
+
+	for _, m := range maps {
+		for key, value := range m {
+			concatenated[key] = value
+		}
 	}
 
-	return m1
+	return concatenated
 }
 
 // Return true if the maps given are equal, else false. O(nlogn)
