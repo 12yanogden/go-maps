@@ -2,6 +2,7 @@ package maps
 
 import (
 	"cmp"
+	"reflect"
 	"slices"
 )
 
@@ -51,14 +52,31 @@ func Equals[K cmp.Ordered, V cmp.Ordered](m1 map[K]V, m2 map[K]V) bool {
 }
 
 // Return true if the key given is in the map given. Else, false.
-func HasKey[KEY comparable, A any](mapp map[KEY]A, key KEY) bool {
-	for mappKey := range mapp {
-		if key == mappKey {
+func HasKey[K comparable, V any](m map[K]V, key K) bool {
+	for mKey := range m {
+		if key == mKey {
 			return true
 		}
 	}
 
 	return false
+}
+
+func HasOneKeyType[K comparable, V any](m map[K]V) bool {
+	if len(m) == 0 {
+		return true
+	}
+	var keyType reflect.Type
+
+	for key := range m {
+		if keyType == nil {
+			keyType = reflect.TypeOf(key)
+		} else if keyType != reflect.TypeOf(key) {
+			return false
+		}
+	}
+
+	return true
 }
 
 // Return keys of the map given
@@ -70,6 +88,18 @@ func Keys[K comparable, V any](m map[K]V) []K {
 	}
 
 	return keys
+}
+
+// Sort the map given by its keys
+func SortByKeys[K cmp.Ordered, V any](m map[K]V) map[K]V {
+	keys := SortedKeys(m)
+	sorted := map[K]V{}
+
+	for _, key := range keys {
+		sorted[key] = m[key]
+	}
+
+	return sorted
 }
 
 // Return a sorted array of keys from the map given
